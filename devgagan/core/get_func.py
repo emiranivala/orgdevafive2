@@ -578,7 +578,7 @@ async def settings_command(event):
         [Button.inline("Session Login", b'addsession'), Button.inline("Logout", b'logout')],
         [Button.inline("Set Thumbnail", b'setthumb'), Button.inline("Remove Thumbnail", b'remthumb')],
         [Button.inline("Upload Method", b'uploadmethod')],
-        [Button.url("Report Errors", "https://t.me/crushe_pro")]
+        [Button.url("Report Errors", "https://t.me/She_who_remain")]
     ]
     await gf.send_file(event.chat_id, file=SET_PIC, caption=MESS, buttons=buttons)
 
