@@ -23,7 +23,7 @@ from devgagan.core.mongo.db import set_session, remove_session, get_data
 import string
 from telethon import events, Button
 from io import BytesIO
-from SpyLib import fast_upload
+from crushe import fast_upload
 
 # --------------- CHUNK SPLITTING FUNCTIONS ---------------
 MAX_CHUNK_SIZE = 2000 * 1024**2  # ~2GB
