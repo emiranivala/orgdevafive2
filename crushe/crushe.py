@@ -3,6 +3,7 @@ Based on parallel_file_transfer.py from mautrix-telegram,
 with permission to distribute under the MIT license.
 Copyright (C) 2019 Tulir Asokan - https://github.com/tulir/mautrix-telegram
 """
+
 import asyncio
 import hashlib
 import inspect
@@ -55,6 +56,8 @@ TypeLocation = Union[
     InputPhotoFileLocation,
 ]
 
+# --- Helper Classes and Functions for Parallel Transfer ---
+
 class DownloadSender:
     client: TelegramClient
     sender: MTProtoSender
@@ -88,6 +91,7 @@ class DownloadSender:
 
     def disconnect(self) -> Awaitable[None]:
         return self.sender.disconnect()
+
 
 class UploadSender:
     client: TelegramClient
@@ -135,6 +139,7 @@ class UploadSender:
             await self.previous
         return await self.sender.disconnect()
 
+
 class ParallelTransferrer:
     client: TelegramClient
     loop: asyncio.AbstractEventLoop
@@ -180,10 +185,14 @@ class ParallelTransferrer:
             return minimum
 
         self.senders = [
-            await self._create_download_sender(file, 0, part_size, connections * part_size, get_part_count()),
+            await self._create_download_sender(
+                file, 0, part_size, connections * part_size, get_part_count()
+            ),
             *await asyncio.gather(
                 *[
-                    self._create_download_sender(file, i, part_size, connections * part_size, get_part_count())
+                    self._create_download_sender(
+                        file, i, part_size, connections * part_size, get_part_count()
+                    )
                     for i in range(1, connections)
                 ]
             ),
@@ -296,6 +305,7 @@ class ParallelTransferrer:
                 part += 1
         await self._cleanup()
 
+
 parallel_transfer_locks: DefaultDict[int, asyncio.Lock] = defaultdict(lambda: asyncio.Lock())
 
 def stream_file(file_to_stream: BinaryIO, chunk_size=1024):
@@ -375,3 +385,4 @@ async def upload_file(
     global filename
     filename = name
     return (await _internal_transfer_to_telegram(client, file, progress_callback))[0]
+    
